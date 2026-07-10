@@ -1,0 +1,11 @@
+Project Falcon — Kickoff Brief
+
+Falcon is a pilot to migrate the Reporting Service off the legacy Monolith and
+onto an event-driven pipeline. Primary stakeholders are the Platform Team and
+the Data Team. Target milestone is a working prototype by the end of Q3.
+
+Open questions:
+- Do we use Kafka or a managed queue for the Event Bus?
+- Who owns the Migration Runbook?
+
+Next steps: schedule a design review, draft the Architecture Decision Record.
