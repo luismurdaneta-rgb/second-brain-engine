@@ -1,0 +1,6 @@
+# Core extraction dependencies (install once):
+#   pip install -r requirements.txt
+pdfplumber>=0.11
+pypdf>=4.0
+python-docx>=1.1
+openpyxl>=3.1

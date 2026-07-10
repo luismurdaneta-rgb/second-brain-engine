@@ -1,0 +1,20 @@
+# Never commit real personal data or generated state
+__pycache__/
+*.pyc
+.DS_Store
+
+# Runtime state / logs / digests (personal)
+.*-digest-*.json
+.*_sync_state.json
+.*_sync_log.jsonl
+.*_log.jsonl
+.calendar_sync_state.json
+*.bak-*
+*.disabled-*
+
+# Your actual vault / raw data — keep it OUT of the repo
+/RAW/
+/Vaults/
+/vault/
+secrets.json
+.env
