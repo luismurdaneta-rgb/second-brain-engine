@@ -1,0 +1,10 @@
+{
+  "_README": "Routing map for auto_curate_folder.py. When a RAW folder is curated and no --vault-name is given, each rule is tried IN ORDER against the RAW folder name; the first match decides the destination vault. Unmatched folders fall back to creating a new vault named after the folder. 'match' is a case-insensitive glob by default (fnmatch: * ? [seq]); set 'regex': true to use a Python regex instead. These are EXAMPLE rules — edit them for your own folders. Order matters: put specific patterns before broad ones.",
+  "rules": [
+    { "match": "Invoices*",       "vault": "Finance",   "note": "example: route invoice dumps into a Finance vault" },
+    { "match": "*Receipts*",      "vault": "Finance" },
+    { "match": "*Coursework*",    "vault": "Study",     "note": "example: class/course material" },
+    { "match": "*Meeting Notes*", "vault": "Work" },
+    { "match": "Project-*",       "vault": "Work",      "note": "example: anything starting with Project-" }
+  ]
+}

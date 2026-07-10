@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Situation Explainer</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #1c1c1c;
+  background: #fafaf7;
+  padding: 20px;
+}
+h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
+h2 { font-size: 15px; font-weight: 500; margin: 0 0 10px; color: #444; text-transform: uppercase; letter-spacing: 0.04em; }
+.meta { color: #888; font-size: 12px; margin-bottom: 18px; }
+.synthesis {
+  background: #fff;
+  border: 0.5px solid #e1e1d8;
+  border-left: 3px solid #1d9e75;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+.synthesis strong { font-weight: 500; }
+.grid { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin-bottom: 14px; }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.full { grid-column: 1 / -1; }
+.card {
+  background: #fff;
+  border: 0.5px solid #e1e1d8;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.metric-row { display: flex; gap: 10px; margin-bottom: 16px; }
+.metric {
+  flex: 1;
+  background: #fff;
+  border: 0.5px solid #e1e1d8;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.metric .label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+.metric .value { font-size: 24px; font-weight: 500; color: #1c1c1c; }
+.metric.q1 { border-left: 3px solid #d85a30; }
+.metric.q2 { border-left: 3px solid #1d9e75; }
+.metric.q3 { border-left: 3px solid #ba7517; }
+.metric.q4 { border-left: 3px solid #888; }
+
+.list { list-style: none; padding: 0; margin: 0; }
+.list li {
+  padding: 8px 0;
+  border-bottom: 0.5px solid #efeee7;
+  font-size: 13px;
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 10px;
+  align-items: baseline;
+}
+.list li:last-child { border-bottom: 0; }
+.tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tag-family { background: #fbeaf0; color: #72243e; }
+.tag-academic { background: #eaf3de; color: #3b6d11; }
+.tag-legal { background: #fceaea; color: #791f1f; }
+.tag-bot { background: #f1efe8; color: #5f5e5a; }
+.tag-event { background: #e6f1fb; color: #0c447c; }
+.tag-work { background: #faeeda; color: #633806; }
+.tag-needs_reply { background: #fceaea; color: #791f1f; }
+.tag-rsvp_pending { background: #fceaea; color: #791f1f; }
+.tag-admin { background: #f1efe8; color: #5f5e5a; }
+.priority-pill {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f1efe8;
+  color: #5f5e5a;
+}
+.priority-q1 { background: #fceaea; color: #791f1f; }
+.priority-q2 { background: #eaf3de; color: #3b6d11; }
+.priority-q3 { background: #faeeda; color: #633806; }
+.priority-q4 { background: #f1efe8; color: #5f5e5a; }
+.title-line { font-weight: 500; }
+.detail-line { color: #666; font-size: 12px; margin-top: 2px; }
+.empty { color: #999; font-style: italic; font-size: 13px; }
+
+.section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.section-header h2 { margin: 0; }
+.count-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 1px 7px;
+  border-radius: 8px;
+  background: #f1efe8;
+  color: #5f5e5a;
+}
+.canvas-wrap { position: relative; width: 100%; height: 280px; }
+.matrix-wrap { position: relative; width: 100%; height: 320px; }
+.tags-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+button.reload {
+  background: transparent;
+  border: 0.5px solid #d3d1c7;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #444;
+}
+button.reload:hover { background: #f1efe8; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11px; color: #666; margin-bottom: 6px; }
+.legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+@media (max-width: 720px) {
+  .grid, .grid-3 { grid-template-columns: 1fr; }
+  .metric-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<h1>Situation explainer</h1>
+<div class="meta" id="meta">Loading…</div>
+
+<div class="synthesis" id="synthesis">…</div>
+
+<div class="metric-row" id="metric-row"></div>
+
+<div class="grid">
+  <div class="card full">
+    <div class="section-header">
+      <h2>Importance × urgency</h2>
+      <span class="count-badge" id="matrix-count">0</span>
+    </div>
+    <div class="legend">
+      <span><span class="legend-dot" style="background:#d85a30"></span>Q1 Urgent + important</span>
+      <span><span class="legend-dot" style="background:#1d9e75"></span>Q2 Important, not urgent</span>
+      <span><span class="legend-dot" style="background:#ba7517"></span>Q3 Urgent, not important</span>
+      <span><span class="legend-dot" style="background:#888"></span>Q4 Neither</span>
+    </div>
+    <div class="matrix-wrap"><canvas id="matrix" role="img" aria-label="Eisenhower matrix scatter chart of attention demands plotted by importance and urgency"></canvas></div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="section-header">
+      <h2>Top of attention</h2>
+      <span class="count-badge" id="top-count">0</span>
+    </div>
+    <ul class="list" id="top-list"></ul>
+  </div>
+  <div class="card">
+    <div class="section-header">
+      <h2>Today's calendar</h2>
+      <span class="count-badge" id="today-count">0</span>
+    </div>
+    <ul class="list" id="today-list"></ul>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="section-header">
+      <h2>Inbox needs reply</h2>
+      <span class="count-badge" id="inbox-count">0</span>
+    </div>
+    <ul class="list" id="inbox-list"></ul>
+  </div>
+  <div class="card">
+    <div class="section-header">
+      <h2>Waiting on others</h2>
+      <span class="count-badge" id="waiting-count">0</span>
+    </div>
+    <ul class="list" id="waiting-list"></ul>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="section-header"><h2>Backlog age</h2></div>
+    <div class="canvas-wrap"><canvas id="age-chart" role="img" aria-label="Histogram of attention items by age in days"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-header"><h2>Stakeholder load</h2></div>
+    <div class="canvas-wrap"><canvas id="stakeholder-chart" role="img" aria-label="Horizontal bar chart of how many open items each stakeholder appears in"></canvas></div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card full">
+    <div class="section-header">
+      <h2>Open commitments</h2>
+      <span class="count-badge" id="commit-count">0</span>
+    </div>
+    <ul class="list" id="commit-list"></ul>
+  </div>
+</div>
+
+<div class="grid grid-3">
+  <div class="card">
+    <div class="section-header">
+      <h2>Today — Cowork</h2>
+      <span class="count-badge" id="cowork-count">…</span>
+    </div>
+    <ul class="list" id="cowork-list"><li class="empty">Loading from MCP…</li></ul>
+  </div>
+  <div class="card">
+    <div class="section-header">
+      <h2>Today — Claude.ai</h2>
+      <span class="count-badge" id="claude-chats-count">0</span>
+    </div>
+    <ul class="list" id="claude-chats-list"></ul>
+  </div>
+  <div class="card">
+    <div class="section-header">
+      <h2>Today — Vault changes</h2>
+      <span class="count-badge" id="vault-changes-count">0</span>
+    </div>
+    <ul class="list" id="vault-changes-list"></ul>
+  </div>
+</div>
+
+<div class="card" style="font-size: 12px; color: #666; margin-bottom: 14px;">
+  <strong style="font-weight:500">Claude Code activity not shown.</strong> To include it, mount <code>~/.claude/projects/</code> via Cowork and re-run the data extractor — it would parse the JSONL session logs for today.
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<script>
+// ── Snapshot data (baked in at build time) ────────────────────────────────────
+const SNAPSHOT = __SNAPSHOT__;
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function quadrant(it) {
+  const impHigh = it.importance >= 4, urgHigh = it.urgency >= 4;
+  if (impHigh && urgHigh) return 'q1';
+  if (impHigh && !urgHigh) return 'q2';
+  if (!impHigh && urgHigh) return 'q3';
+  return 'q4';
+}
+const QUAD_COLOR = { q1: '#d85a30', q2: '#1d9e75', q3: '#ba7517', q4: '#888888' };
+const QUAD_LABEL = { q1: 'Q1', q2: 'Q2', q3: 'Q3', q4: 'Q4' };
+
+function tagPills(tags) {
+  if (!tags || !tags.length) return '';
+  const filtered = tags.filter(t => !['needs_reply','event'].includes(t)).slice(0, 3);
+  return filtered.map(t => `<span class="tag tag-${t}">${t.replace('_',' ')}</span>`).join(' ');
+}
+function renderItemRow(it, options = {}) {
+  const q = quadrant(it);
+  const dueLabel = it.due_in_days != null
+    ? (it.due_in_days === 0 ? 'today'
+        : it.due_in_days === 1 ? 'tomorrow'
+        : it.due_in_days < 0 ? `${-it.due_in_days}d ago`
+        : `in ${it.due_in_days}d`)
+    : `${it.age_days}d`;
+  return `<li>
+    <span class="priority-pill priority-${q}">${QUAD_LABEL[q]}</span>
+    <div>
+      <div class="title-line">${escapeHtml(it.title)}</div>
+      <div class="detail-line">${escapeHtml(it.detail || '')}</div>
+      <div class="tags-row">${tagPills(it.tags)}</div>
+    </div>
+    <span class="priority-pill">${dueLabel}</span>
+  </li>`;
+}
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── Synthesis ─────────────────────────────────────────────────────────────────
+function renderSynthesis(snap) {
+  const items = snap.items;
+  const q1 = items.filter(it => quadrant(it) === 'q1');
+  const family = items.filter(it => (it.tags||[]).includes('family'));
+  const rsvp = items.filter(it => (it.tags||[]).includes('rsvp_pending'));
+  const reply = items.filter(it => it.type === 'email_reply' && !(it.tags||[]).includes('bot'));
+  const top = q1[0] || items[0];
+  let parts = [];
+  if (top) parts.push(`<strong>Top of mind:</strong> ${escapeHtml(top.title)} — ${escapeHtml(top.detail)}`);
+  const counts = [];
+  if (family.length) counts.push(`${family.length} family-tagged`);
+  if (rsvp.length) counts.push(`${rsvp.length} RSVP pending`);
+  if (reply.length) counts.push(`${reply.length} reply waiting on you`);
+  if (counts.length) parts.push(counts.join(' · '));
+  document.getElementById('synthesis').innerHTML = parts.join('<br>') || '<span class="empty">No demands detected.</span>';
+}
+
+// ── Metrics row ───────────────────────────────────────────────────────────────
+function renderMetrics(snap) {
+  const by = snap.summary.by_quadrant || {};
+  const html = ['q1','q2','q3','q4'].map(q => {
+    const labels = { q1: 'Urgent + important', q2: 'Important, not urgent', q3: 'Urgent, not important', q4: 'Background' };
+    return `<div class="metric ${q}"><div class="label">${labels[q]}</div><div class="value">${by[q]||0}</div></div>`;
+  }).join('');
+  document.getElementById('metric-row').innerHTML = html;
+}
+
+// ── Lists ─────────────────────────────────────────────────────────────────────
+function renderTop(snap) {
+  const top = snap.items.slice(0, 5);
+  document.getElementById('top-count').textContent = top.length;
+  document.getElementById('top-list').innerHTML = top.length
+    ? top.map(it => renderItemRow(it)).join('')
+    : '<li class="empty">No items.</li>';
+}
+function renderToday(snap) {
+  const today = snap.today;
+  const items = snap.items.filter(it => it.type === 'event' && it.due_in_days === 0);
+  document.getElementById('today-count').textContent = items.length;
+  document.getElementById('today-list').innerHTML = items.length
+    ? items.map(it => renderItemRow(it)).join('')
+    : '<li class="empty">Nothing on the calendar today.</li>';
+}
+function renderInbox(snap) {
+  const items = snap.items.filter(it => it.type === 'email_reply');
+  document.getElementById('inbox-count').textContent = items.length;
+  document.getElementById('inbox-list').innerHTML = items.length
+    ? items.map(it => renderItemRow(it)).join('')
+    : '<li class="empty">Nobody waiting on a reply.</li>';
+}
+function renderWaiting(snap) {
+  const items = snap.items.filter(it => it.type === 'waiting_on');
+  document.getElementById('waiting-count').textContent = items.length;
+  document.getElementById('waiting-list').innerHTML = items.length
+    ? items.map(it => renderItemRow(it)).join('')
+    : '<li class="empty">Nothing aging on their side.</li>';
+}
+function renderCommits(snap) {
+  const items = snap.items.filter(it => it.type === 'commitment');
+  document.getElementById('commit-count').textContent = items.length;
+  document.getElementById('commit-list').innerHTML = items.length
+    ? items.map(it => renderItemRow(it)).join('')
+    : '<li class="empty">No open commitments captured. Add bullets under "Ideas & open questions" in your daily notes to see them here.</li>';
+}
+
+// ── Today's activity ─────────────────────────────────────────────────────────
+function renderClaudeChats(snap) {
+  const ta = snap.today_activity || {};
+  const chats = ta.claude_chats || [];
+  document.getElementById('claude-chats-count').textContent = chats.length;
+  document.getElementById('claude-chats-list').innerHTML = chats.length
+    ? chats.map(c => {
+        const meta = [c.source || 'claude'];
+        if (c.message_count) meta.push(`${c.message_count} msgs`);
+        if (c.tool_call_count && c.tool_call_count !== '0') meta.push(`${c.tool_call_count} tools`);
+        const time = c.last_message ? new Date(c.last_message).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '';
+        return `<li>
+          <span class="priority-pill">${escapeHtml(time)}</span>
+          <div>
+            <div class="title-line">${escapeHtml(c.title)}</div>
+            <div class="detail-line">${escapeHtml(meta.join(' · '))}</div>
+          </div>
+          <span class="priority-pill">[[${escapeHtml(c.stem)}]]</span>
+        </li>`;
+      }).join('')
+    : '<li class="empty">No Claude.ai chats logged today.</li>';
+}
+
+function renderVaultChanges(snap) {
+  const ta = snap.today_activity || {};
+  const vc = ta.vault_changes || {total: 0, by_vault: {}, samples: {}};
+  document.getElementById('vault-changes-count').textContent = vc.total;
+  const entries = Object.entries(vc.by_vault || {});
+  if (!entries.length) {
+    document.getElementById('vault-changes-list').innerHTML = '<li class="empty">No files modified today.</li>';
+    return;
+  }
+  document.getElementById('vault-changes-list').innerHTML = entries.map(([v, n]) => {
+    const samples = (vc.samples?.[v] || []).slice(0, 3).map(escapeHtml).join(', ');
+    return `<li>
+      <span class="priority-pill">${n}</span>
+      <div>
+        <div class="title-line">${escapeHtml(v)}</div>
+        <div class="detail-line">${samples ? 'e.g. ' + samples : ''}</div>
+      </div>
+      <span></span>
+    </li>`;
+  }).join('');
+}
+
+async function renderCoworkSessions() {
+  const list = document.getElementById('cowork-list');
+  const count = document.getElementById('cowork-count');
+  if (!window.cowork || !window.cowork.callMcpTool) {
+    count.textContent = '–';
+    list.innerHTML = '<li class="empty">Cowork MCP not available in this view.</li>';
+    return;
+  }
+  try {
+    const res = await window.cowork.callMcpTool('mcp__session_info__list_sessions', { limit: 30 });
+    // The tool returns plain text; parse leading "- session_id" lines.
+    const text = typeof res === 'string' ? res : (res?.content?.[0]?.text || JSON.stringify(res));
+    const sessions = [];
+    const today = new Date().toISOString().slice(0, 10);
+    text.split('\n').forEach(line => {
+      const m = line.match(/^\s*-\s+(\S+)\s+"([^"]+)"\s+\(([^,]+),\s*cwd:\s*([^,)]+)/);
+      if (m) sessions.push({ id: m[1], title: m[2], state: m[3].trim(), cwd: m[4].trim() });
+    });
+    count.textContent = sessions.length;
+    if (!sessions.length) {
+      list.innerHTML = '<li class="empty">No Cowork sessions visible.</li>';
+      return;
+    }
+    list.innerHTML = sessions.slice(0, 10).map(s => `<li>
+      <span class="priority-pill">${escapeHtml(s.state)}</span>
+      <div>
+        <div class="title-line">${escapeHtml(s.title)}</div>
+        <div class="detail-line">${escapeHtml(s.id)}</div>
+      </div>
+      <span></span>
+    </li>`).join('');
+  } catch (e) {
+    count.textContent = '!';
+    list.innerHTML = `<li class="empty">Failed to load sessions: ${escapeHtml(String(e))}</li>`;
+  }
+}
+
+// ── Charts ────────────────────────────────────────────────────────────────────
+function renderMatrix(snap) {
+  const ctx = document.getElementById('matrix');
+  document.getElementById('matrix-count').textContent = snap.items.length;
+  // bucket points by quadrant for separate datasets/colors
+  const ds = ['q1','q2','q3','q4'].map(q => ({
+    label: { q1: 'Q1 urgent+important', q2: 'Q2 important', q3: 'Q3 urgent', q4: 'Q4 background' }[q],
+    data: snap.items.filter(it => quadrant(it) === q).map(it => ({
+      x: it.urgency + (Math.random()*0.3-0.15),
+      y: it.importance + (Math.random()*0.3-0.15),
+      _it: it,
+    })),
+    backgroundColor: QUAD_COLOR[q],
+    pointRadius: 8,
+    pointHoverRadius: 11,
+    pointStyle: { q1: 'circle', q2: 'rectRot', q3: 'triangle', q4: 'rect' }[q],
+  }));
+  new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: ds },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (c) => {
+              const it = c.raw._it;
+              return [it.title, it.detail || '', `Importance ${it.importance} · Urgency ${it.urgency}`];
+            },
+          },
+        },
+      },
+      scales: {
+        x: { type: 'linear', min: 0.5, max: 5.5, title: { display: true, text: 'Urgency →' }, ticks: { stepSize: 1 } },
+        y: { type: 'linear', min: 0.5, max: 5.5, title: { display: true, text: 'Importance →' }, ticks: { stepSize: 1 } },
+      },
+    },
+  });
+}
+
+function renderAgeChart(snap) {
+  const buckets = { '0d': 0, '1-2d': 0, '3-7d': 0, '8-14d': 0, '15+d': 0 };
+  snap.items.forEach(it => {
+    const a = it.age_days;
+    if (a <= 0) buckets['0d']++;
+    else if (a <= 2) buckets['1-2d']++;
+    else if (a <= 7) buckets['3-7d']++;
+    else if (a <= 14) buckets['8-14d']++;
+    else buckets['15+d']++;
+  });
+  new Chart(document.getElementById('age-chart'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(buckets),
+      datasets: [{ label: 'items', data: Object.values(buckets), backgroundColor: '#378add' }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+    },
+  });
+}
+
+function renderStakeholderChart(snap) {
+  const sh = (snap.summary.stakeholders || []).slice(0, 8);
+  if (!sh.length) {
+    document.getElementById('stakeholder-chart').replaceWith(Object.assign(document.createElement('div'), { className: 'empty', textContent: 'No stakeholders linked.' }));
+    return;
+  }
+  new Chart(document.getElementById('stakeholder-chart'), {
+    type: 'bar',
+    data: {
+      labels: sh.map(s => s.name.replace(/@.*$/, '')),
+      datasets: [{ label: 'open items', data: sh.map(s => s.count), backgroundColor: '#7f77dd' }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } },
+    },
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+function render(snap) {
+  const ts = new Date(snap.generated_at);
+  document.getElementById('meta').textContent = `Snapshot for ${snap.today} · generated ${ts.toLocaleString()} · ${snap.summary.total} items`;
+  renderSynthesis(snap);
+  renderMetrics(snap);
+  renderTop(snap);
+  renderToday(snap);
+  renderInbox(snap);
+  renderWaiting(snap);
+  renderCommits(snap);
+  renderClaudeChats(snap);
+  renderVaultChanges(snap);
+  renderMatrix(snap);
+  renderAgeChart(snap);
+  renderStakeholderChart(snap);
+  renderCoworkSessions();  // async — fetches from MCP
+}
+render(SNAPSHOT);
+</script>
+</body>
+</html>
